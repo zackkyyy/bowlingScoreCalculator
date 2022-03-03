@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 import './ScoreBoard.css'
-import { useSelector } from "react-redux";
-import { RootState } from "../../app/store";
+import { useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
 
 export const ScoreBoard = () => {
     const rolls = useSelector((state: RootState) => state.score.rolls);
@@ -10,7 +10,7 @@ export const ScoreBoard = () => {
         const headers = Array.from(new Array(10))
             .map((item: any, key) => <td colSpan={6}>{key + 1}</td>)
         return (
-            <tr className="headers">
+            <tr className='headers'>
                 {headers}
             </tr>
         )
@@ -24,8 +24,8 @@ export const ScoreBoard = () => {
             return <td colSpan={3}>{frame}</td>
         })
         return (
-            <tr className="rollsRwo">
-                {rolls.length === 0 && <div className="filler"></div>}
+            <tr className='rollsRwo'>
+                {rolls.length === 0 && <div className='filler'></div>}
                 {scores}
             </tr>
         )

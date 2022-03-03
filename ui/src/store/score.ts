@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import {insertRoll, replaceCharactersWithNumericValue} from "./ScoreUtils";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { insertRoll, replaceCharactersWithNumericValue } from './ScoreUtils';
 
 type initialStateType = { rolls: string[]; totalScore: number };
 
@@ -12,7 +12,6 @@ export const calculateScore = createAsyncThunk(
         return fetch(`http://localhost:8080/calculate`, {
             method: 'POST',
             headers: {
-                'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(filtered)
@@ -31,7 +30,9 @@ export const scoreSlice = createSlice({
     initialState,
     reducers: {
         roll: (state, { payload }) => {
-            insertRoll(state.rolls, payload);
+            const tempState = {...state};
+            tempState.rolls = insertRoll(tempState.rolls, payload);
+            return tempState
         },
         restartGame: () => {
             return initialState;
@@ -39,11 +40,15 @@ export const scoreSlice = createSlice({
     },
     extraReducers : (builder => {
         builder.addCase(calculateScore.pending, (state) => {
-            state.totalScore = 0;
+            const tempState = {...state};
+            tempState.totalScore = 0;
+            return tempState;
         });
         builder.addCase(calculateScore.fulfilled,
             (state, { payload }) => {
-                state.totalScore = payload;
+                const tempState = {...state};
+                tempState.totalScore = payload;
+                return tempState;
             });
     })
 })

@@ -51,7 +51,7 @@ class CalculatorServiceTest {
     }
     @Test
     void testEmpty() {
-        List<Integer> frames = List.of(0);
+        List<Integer> frames = List.of();
         int score =  service.calculateNewScore(frames);
         assertThat(score, is(0));
     }

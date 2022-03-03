@@ -1,9 +1,9 @@
-import React, {useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { calculateScore, restartGame, roll } from "../../store/score";
-import { RootState} from "../../app/store";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { calculateScore, restartGame, roll } from '../../store/score';
+import { RootState} from '../../app/store';
 import './Buttons.css'
-import { isFirstRollInFrame, isStrike } from "../../store/ScoreUtils";
+import { isFirstRollInFrame, isStrike, MAX_ROLLS_ALLOWED, STRIKE_SIGN } from '../../store/ScoreUtils';
 
 const Buttons = () => {
     const rolls = useSelector((state: RootState) => state.score.rolls);
@@ -11,8 +11,8 @@ const Buttons = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        setShowButtons(rolls.length < 21)
-        if (rolls.length === 21) {
+        setShowButtons(rolls.length < MAX_ROLLS_ALLOWED)
+        if (rolls.length === MAX_ROLLS_ALLOWED) {
             dispatch(calculateScore())
         }
     }, [rolls])
@@ -26,9 +26,10 @@ const Buttons = () => {
 
     const Buttons = () => {
         let int = 11;
+        //TODO: fix the following
         if (!isFirstRollInFrame(rolls) || rolls.length > 19) {
             let previousRoll = rolls[rolls.length - 1]
-            int = previousRoll === 'X' ? int : int -= Number(previousRoll);
+            int = previousRoll === STRIKE_SIGN ? int : int -= Number(previousRoll);
         }
 
         let buttons = Array.from(new Array(int)).map((e, i) => i)
